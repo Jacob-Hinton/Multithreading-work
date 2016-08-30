@@ -1,0 +1,29 @@
+Test 1: affinity build one thread, default iterations, seed = 64923145, personal laptop
+average computation time for 100 runs: 1.06299 seconds
+best completion time: 1.010294 seconds
+worst completion time: 1.278387 seconds
+
+Test 2: affinity build four threads, default iterations, seed = 64923145, personal laptop
+average computation time for 100 runs: .26 seconds
+best completion time: .252514 seconds
+worst completion time: .329981 seconds
+
+Test 3: back up build one thread, default iterations, seed = 64923145, personal laptop
+average computation time for 100 runs: 1.05904 seconds
+best completion time: 1.010540 seconds
+worst completion time: 1.210683 seconds
+
+Test 4: back up build four threads, default iterations, seed = 64923145, personal laptop
+average computation time for 100 runs: .81389 seconds
+best completion time: .800991 seconds
+worst completion time: .904722 seconds
+
+Test 5: back up build one thread, default iterations, seed = 64923145, Dr. Whaley machine
+average computation time for 100 runs: .66181 seconds
+best completion time: 0.655719 seconds
+worst completion time: 0.714335 seconds
+
+Test 6: back up build four threads, default iterations, seed = 64923145, Dr. Whaley machine
+average computation time for 100 runs: 
+best completion time:
+worst completion time:

@@ -1,0 +1,55 @@
+make thread 0 tied to processor (new fork) done
+
+man taskset (this will set affinity of process run) done
+
+hardcode tester, take in args for number of tests.  done
+
+thread pool method build Be sure to have core 0 tied down. active polling  somewhat done
+
+figure out why attr_init produces such a slowdown who knows  not sure if i am capable of solving this one, keep looking at man pages
+
+if all this is done, re fork thread pool to use conditional variable. sleeping 
+
+ending threads causes seggys in thread pool implementation
+
+accuracy and timings inconsistent in thread pool implementation. can probably be chalked up to a combo of mutex locks and shit programming
+
+what even are conditionals
+
+same applies to chunk scheduling
+
+you might have messed up the threads
+
+printer for error fprintf(stderr,"%d of %s\n", __LINE__,__FILE__);   this presents line and file of errror
+
+fix pthread cancel and then do a better implementation
+
+
+
+CHANGES
+
+volatile lets compiler know to always go to memory to access data
+
+STEP 1 more general implementation of thread pool (func ptr's to different work to be done)
+  same params as the one from ATLAS
+less general implementation of work queue (back end computation of work to be done)
+
+new timer emailed to me
+
+
+completely new asg
+
+
+for each timing compute running sum of all runs, max time, and min time for all cores
+
+thread sleeping
+
+
+
+ssh -p 2525 jhinton@drteeth.cct.lsu.edu
+ 
+ 
+ssh  jacob@130.39.95.167
+
+
+flag for cpu megahertz
