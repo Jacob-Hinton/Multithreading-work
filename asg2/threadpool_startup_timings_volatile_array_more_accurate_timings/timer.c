@@ -38,7 +38,7 @@ struct workq
 struct threadstruct
 {
   volatile int threadrank;
-  volatile double *threadarray;
+  volatile unsigned long *threadarray;
 };
 //function shows user what flags do what in the program
 
@@ -62,7 +62,7 @@ void GetFlags(int nargs, char **args, double *clk, int *p, int *num_cpus, int *t
   //the following values are the default flags and will be used
   //if a flag is not explicitly given
   
-  *clk = 2400;
+  *clk = 3500;
   *p = 4;
   *num_cpus = 4;
   *tst_num = 50;
@@ -172,12 +172,17 @@ void AddWork(struct workq *p)
   workhead = p;
   pthread_mutex_unlock(&wqlock);
 }
-int sort(const void *x, const void *y)
+int cmp(const void* x, const void* y)
 {
-  unsigned long xx = *(unsigned long*)x, yy = *(unsigned long*)y;
-  if (xx < yy) return -1;
-  if (xx > yy) return  1;
-  return 0;
+  unsigned long xx = *(const unsigned long*)x;
+  unsigned long yy = *(const unsigned long*)y;
+
+  if(xx==yy) 
+    return 0;
+  if(xx < yy) 
+    return -1;
+  else 
+    return 0;
 }
 
 double Mmin(double x, double y)
@@ -210,7 +215,7 @@ int main(int nargs, char **args)
   pthread_attr_t attr;
   cpu_set_t cpuset;
   pthread_t *mythrs;
-  volatile double *hitarray;
+  volatile unsigned long *hitarray;
   
   struct threadstruct *thrdstruct;
   
@@ -224,7 +229,7 @@ int main(int nargs, char **args)
   pthread_mutex_init(&wqlock, NULL);
   
   mythrs = malloc(sizeof(pthread_t)*(p));
-  hitarray = malloc(sizeof(long)*(p));
+  hitarray = malloc(sizeof(unsigned long)*(p));
   thrdstruct = malloc(sizeof(struct threadstruct)*(p));
   mywork = malloc(sizeof(struct workq)*(p));
   for(i=0;i<p;i++)
@@ -292,21 +297,15 @@ int main(int nargs, char **args)
 	break;
     }
 
-    qsort(&hitarray, p, sizeof(long), sort);
-    
-    fprintf(stderr,"%d of %s\n", __LINE__,__FILE__);
-
+    fprintf(stderr,"%lu\n", hitarray[0] - time1);
+    qsort(hitarray, p, sizeof(unsigned long), cmp);
     d = (hitarray[0] - time1) / (clockspeed * 1000000);
-    fprintf(stderr,"%d of %s\n", __LINE__,__FILE__);
 
     best_thread = Mmin(d,best_thread);
-    fprintf(stderr,"%d of %s\n", __LINE__,__FILE__);
 
     d = (hitarray[p] - time1) / (clockspeed * 1000000);
-    fprintf(stderr,"%d of %s\n", __LINE__,__FILE__);
 
     worst_thread = Mmax(d,worst_thread);
-    fprintf(stderr,"%d of %s\n", __LINE__,__FILE__);
     while(j>0)
     {
       avg_thread += (hitarray[j] - time1) / (clockspeed * 1000000);
@@ -328,15 +327,14 @@ int main(int nargs, char **args)
     
     if(j<p)
     {
-      if(hitarray[j] == 1)
+      if(hitarray[j] != 0)
       {
-        hitarray[j] = 0;
         j++;
       }
     }
     else
       break;
   }
-  fprintf(stdout,"worst thread completion time = %f, best thread completion time = %f, avg thread completion time = %f\n", worst_thread, best_thread, avg_thread);
+  fprintf(stdout,"worst thread completion time = %f, best thread completion time = %f, avg thread completion time = %f\n", worst_thread, best_thread, avg_thread/(p * tst_num));
   //free(mythrs);
 }
